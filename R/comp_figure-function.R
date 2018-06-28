@@ -8,7 +8,7 @@
 #' @export
 #'
 comp_figure <- function(.data, ...) {
-  UseMethod("completion", .data)
+  UseMethod("comp_figure", .data)
 }
 
 #' @rdname comp_figure
