@@ -23,7 +23,6 @@ an estimated succes rate (%) as a numeric
 Computes success rate using Wilson estimate
 }
 \seealso{
-Other success rate estimators: \code{\link{completion}},
-  \code{\link{laplace}}, \code{\link{mle}},
-  \code{\link{wald.ci}}
+Other success rate estimators: \code{\link{laplace}},
+  \code{\link{mle}}, \code{\link{wald.ci}}
 }
