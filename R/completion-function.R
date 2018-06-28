@@ -70,15 +70,15 @@ completion.default <-
       out
     }
     return(
-      data.frame(
-        "Successes" = .success,
-        "Total Trials" = .trials,
-        "Raw Success\\%" = round(p * 100,2),
-        "Estimate" = out[[2]],
-        "Success \\%" = round(out[[3]] *100,2),
-        "Low CI \\%" = ifelse(out[[4]][[1]] == 0,0,round(out[[4]][[1]]*100,2)),
-        "High CI\\%" = ifelse(out[[4]][[2]] == 100,100,round(out[[4]][[2]] * 100,2))
-      )
+    data.frame(
+      "successes" = .success,
+      "trials" = .trials,
+      "orig.succ.pct" = round(p * 100,2),
+      "estim" = out[[2]],
+      "success.pct" = round(out[[3]] *100,2),
+      "low.ci.pct" = ifelse(out[[4]][[1]] == 0,0,round(out[[4]][[1]]*100,2)),
+      "hi.ci.pct" = ifelse(out[[4]][[2]] == 100,100,round(out[[4]][[2]] * 100,2))
+       )
     )
   }
 

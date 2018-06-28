@@ -23,7 +23,7 @@ a dataframe with stats
 Computes estimated success rate with confidence intervals
 }
 \seealso{
-Other success rate estimators: \code{\link{laplace}},
-  \code{\link{mle}}, \code{\link{wald.ci}},
-  \code{\link{wilson}}
+Other success rate estimators: \code{\link{df_completion}},
+  \code{\link{laplace}}, \code{\link{mle}},
+  \code{\link{wald.ci}}, \code{\link{wilson}}
 }

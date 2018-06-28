@@ -24,6 +24,6 @@ Computes success rate using Maximum Liklihood estimate
 }
 \seealso{
 Other success rate estimators: \code{\link{completion}},
-  \code{\link{laplace}}, \code{\link{wald.ci}},
-  \code{\link{wilson}}
+  \code{\link{df_completion}}, \code{\link{laplace}},
+  \code{\link{wald.ci}}, \code{\link{wilson}}
 }

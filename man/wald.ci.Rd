@@ -26,6 +26,6 @@ Computes confidence intervals using adjusted Wald (Agresti & Coull, 1998)
 }
 \seealso{
 Other success rate estimators: \code{\link{completion}},
-  \code{\link{laplace}}, \code{\link{mle}},
-  \code{\link{wilson}}
+  \code{\link{df_completion}}, \code{\link{laplace}},
+  \code{\link{mle}}, \code{\link{wilson}}
 }

@@ -24,6 +24,6 @@ Computes success rate using Wilson estimate
 }
 \seealso{
 Other success rate estimators: \code{\link{completion}},
-  \code{\link{laplace}}, \code{\link{mle}},
-  \code{\link{wald.ci}}
+  \code{\link{df_completion}}, \code{\link{laplace}},
+  \code{\link{mle}}, \code{\link{wald.ci}}
 }

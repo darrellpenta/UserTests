@@ -14,3 +14,4 @@ Collate:
     'laplace-function.R'
     'wilson-function.R'
     'completion-function.R'
+    'df.completion.helper-function.R'
