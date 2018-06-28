@@ -1,6 +1,8 @@
 ---
 title: "Working with UserTests"
 output: html_notebook
+editor_options: 
+  chunk_output_type: inline
 ---
 
 Start by properly preparing your data file, which should be saved in``.csv`` format. The data file should have either 3 or 4 columns, depending upon whether one or two test groups are being analyzed. 
@@ -23,12 +25,14 @@ Participant | Task | Success | Group
 Next, import the file into R.
 
 ```{r}
-readr::
+mydata<-readr::read_csv("sample data/sample_data_2.csv")
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+Next, isntall and load the ``UserTests`` package.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```{r}
+install.packages("devtools")
+library(devtools)
+devtools::install_github(repo = )
+```
 

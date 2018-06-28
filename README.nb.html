@@ -146,7 +146,7 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("Usability Task Success Analysis.Rmd");
+  window.initializeSourceEmbed("README.md");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
@@ -175,7 +175,6 @@ $(document).ready(function () {
 </div>
 
 
-<!-- rnb-text-begin -->
 <p>Start by properly preparing your data file, which should be saved in<code>.csv</code> format. The data file should have either 3 or 4 columns, depending upon whether one or two test groups are being analyzed.</p>
 <p>In both cases, three of the columns should be: <strong>Participant</strong>, <strong>Task</strong>, and <strong>Success</strong>. The fourth (optional) column shuold be <strong>Group</strong>. See table 1:</p>
 <p>Table 1</p>
@@ -240,39 +239,13 @@ $(document).ready(function () {
 </tbody>
 </table>
 <p>Next, import the file into R.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlkYXRhPC1yZWFkcjo6cmVhZF9jc3YoXCJzYW1wbGUgZGF0YS9zYW1wbGVfZGF0YV8yLmNzdlwiKVxuYGBgIn0= -->
-<pre class="r"><code>mydata&lt;-readr::read_csv(&quot;sample data/sample_data_2.csv&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBHcm91cCA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgUGFydGljaXBhbnQgPSBjb2xfaW50ZWdlcigpLFxuICBUYXNrID0gY29sX2ludGVnZXIoKSxcbiAgU3VjY2VzcyA9IGNvbF9pbnRlZ2VyKClcbilcbiJ9 -->
-<pre><code>Parsed with column specification:
-cols(
-  Group = col_character(),
-  Participant = col_integer(),
-  Task = col_integer(),
-  Success = col_integer()
-)</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
+<pre class="{r}"><code>mydata&lt;-readr::read_csv(&quot;sample data/sample_data_2.csv&quot;)</code></pre>
 <p>Next, isntall and load the <code>UserTests</code> package.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5zdGFsbC5wYWNrYWdlcyhcImRldnRvb2xzXCIpXG5gYGAifQ== -->
-<pre class="r"><code>install.packages(&quot;devtools&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gaW5zdGFsbC5wYWNrYWdlcyA6IFVwZGF0aW5nIGxvYWRlZCBwYWNrYWdlc1xuIn0= -->
-<pre><code>Error in install.packages : Updating loaded packages</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShkZXZ0b29scylcbmBgYCJ9 -->
-<pre class="r"><code>library(devtools)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
+<pre class="{r}"><code>install.packages(&quot;devtools&quot;)
+library(devtools)
+devtools::install_github(repo = )</code></pre>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiV29ya2luZyB3aXRoIFVzZXJUZXN0cyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKU3RhcnQgYnkgcHJvcGVybHkgcHJlcGFyaW5nIHlvdXIgZGF0YSBmaWxlLCB3aGljaCBzaG91bGQgYmUgc2F2ZWQgaW5gYC5jc3ZgYCBmb3JtYXQuIFRoZSBkYXRhIGZpbGUgc2hvdWxkIGhhdmUgZWl0aGVyIDMgb3IgNCBjb2x1bW5zLCBkZXBlbmRpbmcgdXBvbiB3aGV0aGVyIG9uZSBvciB0d28gdGVzdCBncm91cHMgYXJlIGJlaW5nIGFuYWx5emVkLiAKCkluIGJvdGggY2FzZXMsIHRocmVlIG9mIHRoZSBjb2x1bW5zIHNob3VsZCBiZTogKipQYXJ0aWNpcGFudCoqLCAqKlRhc2sqKiwgYW5kICoqU3VjY2VzcyoqLiBUaGUgZm91cnRoIChvcHRpb25hbCkgY29sdW1uIHNodW9sZCBiZSAqKkdyb3VwKiouIFNlZSB0YWJsZSAxOgoKVGFibGUgMQoKUGFydGljaXBhbnQgfCBUYXNrIHwgU3VjY2VzcyB8IEdyb3VwICAgCi0tLS0tLS0tLS0tIHwgLS0tLSB8IC0tLS0tLS0gfCAtLS0tLSAKIDEgICAgICAgICAgfCAxICAgIHwgIDEgICAgICB8IENUQ1QgICAgCiAxICAgICAgICAgIHwgMSAgICB8ICAwICAgICAgfCBNQyAgICAgIAogMSAgICAgICAgICB8IDIgICAgfCAgMSAgICAgIHwgQ1RDVCAgICAKIDEgICAgICAgICAgfCAyICAgIHwgIDEgICAgICB8IE1DICAgICAgCiAyICAgICAgICAgIHwgMSAgICB8ICAxICAgICAgfCBDVENUICAgIAogMiAgICAgICAgICB8IDEgICAgfCAgMCAgICAgIHwgTUMgICAgICAKIDIgICAgICAgICAgfCAyICAgIHwgIDAgICAgICB8IENUQ1QgICAgCiAyICAgICAgICAgIHwgMiAgICB8ICAxICAgICAgfCBNQyAgICAgIAoKTmV4dCwgaW1wb3J0IHRoZSBmaWxlIGludG8gUi4KCmBgYHtyfQpteWRhdGE8LXJlYWRyOjpyZWFkX2Nzdigic2FtcGxlIGRhdGEvc2FtcGxlX2RhdGFfMi5jc3YiKQpgYGAKCk5leHQsIGlzbnRhbGwgYW5kIGxvYWQgdGhlIGBgVXNlclRlc3RzYGAgcGFja2FnZS4KCmBgYHtyfQppbnN0YWxsLnBhY2thZ2VzKCJkZXZ0b29scyIpCmxpYnJhcnkoZGV2dG9vbHMpCmRldnRvb2xzOjppbnN0YWxsX2dpdGh1YihyZXBvID0gKQpgYGAKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiV29ya2luZyB3aXRoIFVzZXJUZXN0cyIKb3V0cHV0OiBodG1sX25vdGVib29rCmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lCi0tLQoKU3RhcnQgYnkgcHJvcGVybHkgcHJlcGFyaW5nIHlvdXIgZGF0YSBmaWxlLCB3aGljaCBzaG91bGQgYmUgc2F2ZWQgaW5gYC5jc3ZgYCBmb3JtYXQuIFRoZSBkYXRhIGZpbGUgc2hvdWxkIGhhdmUgZWl0aGVyIDMgb3IgNCBjb2x1bW5zLCBkZXBlbmRpbmcgdXBvbiB3aGV0aGVyIG9uZSBvciB0d28gdGVzdCBncm91cHMgYXJlIGJlaW5nIGFuYWx5emVkLiAKCkluIGJvdGggY2FzZXMsIHRocmVlIG9mIHRoZSBjb2x1bW5zIHNob3VsZCBiZTogKipQYXJ0aWNpcGFudCoqLCAqKlRhc2sqKiwgYW5kICoqU3VjY2VzcyoqLiBUaGUgZm91cnRoIChvcHRpb25hbCkgY29sdW1uIHNodW9sZCBiZSAqKkdyb3VwKiouIFNlZSB0YWJsZSAxOgoKVGFibGUgMQoKUGFydGljaXBhbnQgfCBUYXNrIHwgU3VjY2VzcyB8IEdyb3VwICAgCi0tLS0tLS0tLS0tIHwgLS0tLSB8IC0tLS0tLS0gfCAtLS0tLSAKIDEgICAgICAgICAgfCAxICAgIHwgIDEgICAgICB8IENUQ1QgICAgCiAxICAgICAgICAgIHwgMSAgICB8ICAwICAgICAgfCBNQyAgICAgIAogMSAgICAgICAgICB8IDIgICAgfCAgMSAgICAgIHwgQ1RDVCAgICAKIDEgICAgICAgICAgfCAyICAgIHwgIDEgICAgICB8IE1DICAgICAgCiAyICAgICAgICAgIHwgMSAgICB8ICAxICAgICAgfCBDVENUICAgIAogMiAgICAgICAgICB8IDEgICAgfCAgMCAgICAgIHwgTUMgICAgICAKIDIgICAgICAgICAgfCAyICAgIHwgIDAgICAgICB8IENUQ1QgICAgCiAyICAgICAgICAgIHwgMiAgICB8ICAxICAgICAgfCBNQyAgICAgIAoKTmV4dCwgaW1wb3J0IHRoZSBmaWxlIGludG8gUi4KCmBgYHtyfQpteWRhdGE8LXJlYWRyOjpyZWFkX2Nzdigic2FtcGxlIGRhdGEvc2FtcGxlX2RhdGFfMi5jc3YiKQpgYGAKCk5leHQsIGlzbnRhbGwgYW5kIGxvYWQgdGhlIGBgVXNlclRlc3RzYGAgcGFja2FnZS4KCmBgYHtyfQppbnN0YWxsLnBhY2thZ2VzKCJkZXZ0b29scyIpCmxpYnJhcnkoZGV2dG9vbHMpCmRldnRvb2xzOjppbnN0YWxsX2dpdGh1YihyZXBvID0gKQpgYGAKCg==</div>
 
 
 
