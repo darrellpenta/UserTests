@@ -3,11 +3,14 @@
 \name{completion}
 \alias{completion}
 \alias{completion.default}
+\alias{completion.data.frame}
 \title{Computes estimated success rate with confidence intervals}
 \usage{
 completion(.success, ...)
 
 \method{completion}{default}(.success, .trials, ...)
+
+\method{completion}{data.frame}(.success, ...)
 }
 \arguments{
 \item{.success}{the total number of successes}
@@ -23,7 +26,8 @@ a dataframe with stats
 Computes estimated success rate with confidence intervals
 }
 \seealso{
-Other success rate estimators: \code{\link{df_completion}},
+Other success rate estimators: \code{\link{comp_figure}},
+  \code{\link{df.completion.helper}},
   \code{\link{laplace}}, \code{\link{mle}},
   \code{\link{wald.ci}}, \code{\link{wilson}}
 }

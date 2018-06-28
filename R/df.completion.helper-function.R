@@ -8,9 +8,21 @@
 #' @export
 #'
 #'
-df_completion <-function(.data, ...){
-  success <- .data[1, which(colnames(.data))=="success"]
-  trials <- .data[1, which(colnames(.data))=="trials"]
-  out <- data.frame(completion(.success=success, .trials=trials))
+df.completion.helper <-function(.data,...){
+
+  if(ncol(.data)==3){
+  success <- .data[[3]][1]
+  trials <- .data[[2]][1]
+  out <- data.frame(completion(.success=success, .trials=trials), stringsAsFactors = FALSE)
   out
+  }
+  else if(ncol(.data)==4) {
+    success <- .data[[4]][1]
+    trials <- .data[[3]][1]
+    out <- data.frame(completion(.success=success, .trials=trials), stringsAsFactors = FALSE)
+    out
+  }
+  else{
+    stop("You have too many columns in your data set.")
+  }
 }

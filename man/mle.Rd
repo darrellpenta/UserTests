@@ -23,7 +23,9 @@ an estimated succes rate (%) as a numeric
 Computes success rate using Maximum Liklihood estimate
 }
 \seealso{
-Other success rate estimators: \code{\link{completion}},
-  \code{\link{df_completion}}, \code{\link{laplace}},
-  \code{\link{wald.ci}}, \code{\link{wilson}}
+Other success rate estimators: \code{\link{comp_figure}},
+  \code{\link{completion}},
+  \code{\link{df.completion.helper}},
+  \code{\link{laplace}}, \code{\link{wald.ci}},
+  \code{\link{wilson}}
 }

@@ -5,6 +5,7 @@
 #' @param ... further arguments passed to or from other methods
 #' @return a dataframe with stats
 #' @family success rate estimators
+#' @include df.completion.helper-function.R
 #' @include wilson-function.R
 #' @include laplace-function.R
 #' @include mle-function.R
@@ -25,8 +26,12 @@ completion.default <-
   function(.success, .trials, ...){
     p <- .success / .trials
 
-    if(p > 1 | p < 0){
-      return("STOP! Check your calculations; rate is either less than 0 or greater than 100")
+    if(p > 1){
+      return("STOP! Check your calculations; rate is greater than 100")
+      stop()
+    }
+    else if (p < 0) {
+      return("STOP! Check your calculations; rate is less than 0")
       stop()
     }
     else if(p == 0){
@@ -70,15 +75,48 @@ completion.default <-
       out
     }
     return(
-    data.frame(
-      "successes" = .success,
-      "trials" = .trials,
-      "orig.succ.pct" = round(p * 100,2),
-      "estim" = out[[2]],
-      "success.pct" = round(out[[3]] *100,2),
-      "low.ci.pct" = ifelse(out[[4]][[1]] == 0,0,round(out[[4]][[1]]*100,2)),
-      "hi.ci.pct" = ifelse(out[[4]][[2]] == 100,100,round(out[[4]][[2]] * 100,2))
-       )
+      data.frame(
+        "successes" = .success,
+        "trials" = .trials,
+        "orig.succ.pct" = round(p * 100,2),
+        "estimator" = out[[2]],
+        "success.pct" = round(out[[3]] *100,2),
+        "low.ci.pct" = ifelse(out[[4]][[1]] == 0,0,round(out[[4]][[1]]*100,2)),
+        "hi.ci.pct" = ifelse(out[[4]][[2]] == 100,100,round(out[[4]][[2]] * 100,2)),
+        stringsAsFactors = FALSE
+      )
     )
   }
 
+#' @rdname completion
+
+#' @export
+#'
+completion.data.frame <- function(.success, ...){
+
+  if(ncol(.success)==3){
+
+    out <-
+      .success %>%
+      group_by(Task) %>%
+      summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
+      ungroup() %>%
+      group_by(Task) %>%
+      do(df.completion.helper(.))
+    out
+  }
+else if(ncol(.success)==4){
+
+    out <-
+      .success %>%
+      group_by(Task, Group) %>%
+      summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
+      ungroup() %>%
+      group_by(Task, Group) %>%
+      do(df.completion.helper(.))
+    out
+  }
+else{
+    stop("You have too many columns in your data set.")
+  }
+}
