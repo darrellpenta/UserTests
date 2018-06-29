@@ -7,12 +7,21 @@
 \usage{
 comp_figure(.data, ...)
 
-\method{comp_figure}{default}(.data, ...)
+\method{comp_figure}{default}(.data, ..., xlabel = "Objective Success (\%)",
+  ylabel = "Task", legend_lab = "Group")
 }
 \arguments{
 \item{.data}{The results (as a data frame) from \code{Completion} function}
 
 \item{...}{further arguments passed to or from other methods}
+
+\item{xlabel}{Label for the x axis}
+
+\item{ylabel}{Label for the y axis}
+
+\item{legend_lab}{Label for the legend (when groups are compared)}
+
+\item{legend_lab}{Label for the legend (when groups are compared)}
 }
 \value{
 a ggplot figure

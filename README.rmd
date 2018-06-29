@@ -1,0 +1,128 @@
+---
+title: "Working with UserTests"
+output:
+  html_document:
+    number_sections: yes
+editor_options:
+  chunk_output_type: inline
+---
+
+The functions in this package compute success rates and confidence intervals following [Jeff Sauro's excellent write up on MeasuringU](https://measuringu.com/wald/)
+
+# Install packages
+Install and load the ``UserTests`` package and some other packages.
+
+```{r echo=TRUE}
+#install.packages("readr", repos = "http://cran.us.r-project.org" )
+library(readr)
+#install.packages("devtools", repos = "http://cran.us.r-project.org")
+library(devtools)
+#devtools::install_github(repo = "darrellpenta/UserTests")
+library(UserTests)
+```
+
+# Quick Analyses
+
+If you just want to run analyses on a single task for which you know the success rate and the number of trials, provide that information to the ``UserTests::completion`` function, as below. 
+
+
+```{r, echo=TRUE}
+mydata <-
+  UserTests::completion(.success=7, .trials=17)
+mydata
+```
+
+The results returned indicate:
+
+1. **successes**
+The total number of success
+1. **trials**  
+The total number of trials
+1. **orig.succ.pct**  
+The raw success rate as a percentage
+1. **estimator** 
+The name of the method used to adjust the sucess rate (see [Lewis & Sauro, 2006](http://uxpajournal.org/wp-content/uploads/pdf/JUS_Lewis_May2006.pdf])).
+1. **success.pct** 
+The adjusted success rate as a percentage
+1. **low.ci.pct**  
+The lower confidence limit as a percentage
+1. **hi.ci.pct**  
+The upper confidence limit as a percentage
+
+# Analyzing larger data sets
+
+## Get your data in order
+ 
+Start by properly preparing your data file, which should be saved in``.csv`` format. The data file should have either 3 or 4 columns, depending upon whether one or two test groups are being analyzed. 
+
+In both cases, three of the columns should be: **Participant**, **Task**, and **Success**. The fourth (optional) column shuold be **Group**. See table 1:
+
+Table 1
+
+Participant | Task | Success | Group   
+----------- | ---- | ------- | ----- 
+ 1          | 1    |  1      | US    
+ 1          | 1    |  0      | THEM      
+ 1          | 2    |  1      | US    
+ 1          | 2    |  1      | THEM     
+ 2          | 1    |  1      | US    
+ 2          | 1    |  0      | THEM      
+ 2          | 2    |  0      | US    
+ 2          | 2    |  1      | THEM
+ ...        | ...  | ...     | ...
+
+
+## Import the data
+Next, import the file into R.
+
+```{r}
+mydata<-
+  readr::read_csv("sample data/sample_data_2.csv")
+head(mydata)
+```
+
+
+## Create a table of the adjusted completion rate means and confidence intervals
+Run the completion function on your data set to view table of summarized data.
+```{r}
+mytable<-
+  completion(mydata)
+head(mytable)
+
+```
+
+## Export the table
+
+You can export the table as a ``.csv`` file if you'd like one. Provide the path argument as in the example.
+```{r eval=FALSE}
+readr::write_csv(mytable, path = "..\MyDesktop\MyUsabilityStudy\completion-rates.csv")
+```
+
+# Create a figure
+If you need a figure, use the ``comp_._figure`` function. You can overwrite the default labels by providing your own.
+
+```{r}
+myfigure <-
+  comp_figure(mytable, xlabel="Test Task", ylabel = "Success (%)", legend_lab="Groups")
+myfigure
+```
+
+# Saving the figure
+
+To save the figure, provide the output format and path. The easiest way is to combine both of these in one string.  Acceptable file formats include:
+
+* eps
+* ps
+* tex
+* pdf
+* jpeg
+* tiff
+* png
+* bmp
+* svg
+* wmf
+
+```{r eval=FALSE}
+ggsave("../MyDesktop/usability-test-figure.png")
+```
+
