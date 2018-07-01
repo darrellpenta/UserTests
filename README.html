@@ -140,7 +140,7 @@ library(UserTests)</code></pre>
 <h1><span class="header-section-number">2</span> Quick Analyses</h1>
 <p>If you just want to run analyses on a single task for which you know the success rate and the number of trials, provide that information to the <code>UserTests::completion</code> function, as below.</p>
 <pre class="r"><code>mydata &lt;-
-  UserTests::completion(.success=7, .trials=17)
+  completion(.success=7, .trials=17)
 mydata</code></pre>
 <pre><code>##   successes trials orig.succ.pct estimator success.pct low.ci.pct
 ## 1         7     17         41.18    Wilson        42.8      21.56
@@ -148,13 +148,16 @@ mydata</code></pre>
 ## 1     64.05</code></pre>
 <p>The results returned indicate:</p>
 <ol style="list-style-type: decimal">
-<li><strong>successes</strong> The total number of success</li>
-<li><strong>trials</strong><br />
+<li><strong>successes</strong><br />
+The total number of success</li>
+<li><strong>trials</strong> x x<br />
 The total number of trials</li>
 <li><strong>orig.succ.pct</strong><br />
 The raw success rate as a percentage</li>
-<li><strong>estimator</strong> The name of the method used to adjust the sucess rate (see <a href="http://uxpajournal.org/wp-content/uploads/pdf/JUS_Lewis_May2006.pdf%5D">Lewis &amp; Sauro, 2006</a>).</li>
-<li><strong>success.pct</strong> The adjusted success rate as a percentage</li>
+<li><strong>estimator</strong><br />
+The name of the method used to adjust the sucess rate (see <a href="http://uxpajournal.org/wp-content/uploads/pdf/JUS_Lewis_May2006.pdf%5D">Lewis &amp; Sauro, 2006</a>).</li>
+<li><strong>success.pct</strong><br />
+The adjusted success rate as a percentage</li>
 <li><strong>low.ci.pct</strong><br />
 The lower confidence limit as a percentage</li>
 <li><strong>hi.ci.pct</strong><br />
@@ -166,8 +169,8 @@ The upper confidence limit as a percentage</li>
 <div id="get-your-data-in-order" class="section level2">
 <h2><span class="header-section-number">3.1</span> Get your data in order</h2>
 <p>Start by properly preparing your data file, which should be saved in<code>.csv</code> format. The data file should have either 3 or 4 columns, depending upon whether one or two test groups are being analyzed.</p>
-<p>In both cases, three of the columns should be: <strong>Participant</strong>, <strong>Task</strong>, and <strong>Success</strong>. The fourth (optional) column shuold be <strong>Group</strong>. See table 1:</p>
-<p>Table 1</p>
+<p>In both cases, three of the columns should be: <strong>Participant</strong> (numeric value), <strong>Task</strong> (numeric value), and <strong>Success</strong> (numeric value, coded as 1=success, 0=failure). The fourth (optional) column shuold be <strong>Group</strong> (character/text value). See table 1:</p>
+<p><strong>Table 1. Example task completion data set</strong></p>
 <table>
 <thead>
 <tr class="header">
@@ -237,7 +240,7 @@ The upper confidence limit as a percentage</li>
 </div>
 <div id="import-the-data" class="section level2">
 <h2><span class="header-section-number">3.2</span> Import the data</h2>
-<p>Next, import the file into R.</p>
+<p>Next, import the <code>.csv</code> file into R using the (readr)[<a href="https://cran.r-project.org/web/packages/readr/README.html" class="uri">https://cran.r-project.org/web/packages/readr/README.html</a>] package.</p>
 <pre class="r"><code>mydata&lt;-
   readr::read_csv(&quot;sample data/sample_data_2.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
@@ -260,7 +263,7 @@ The upper confidence limit as a percentage</li>
 </div>
 <div id="create-a-table-of-the-adjusted-completion-rate-means-and-confidence-intervals" class="section level2">
 <h2><span class="header-section-number">3.3</span> Create a table of the adjusted completion rate means and confidence intervals</h2>
-<p>Run the completion function on your data set to view table of summarized data.</p>
+<p>Run the completion function on your data set to view a table of summarized data. The <code>head</code> function in the code below is a convenient way to view the first few rows of data.</p>
 <pre class="r"><code>mytable&lt;-
   completion(mydata)
 head(mytable)</code></pre>
@@ -278,13 +281,13 @@ head(mytable)</code></pre>
 </div>
 <div id="export-the-table" class="section level2">
 <h2><span class="header-section-number">3.4</span> Export the table</h2>
-<p>You can export the table as a <code>.csv</code> file if you’d like one. Provide the path argument as in the example.</p>
+<p>You can export the table as a <code>.csv</code> file. Just include the path to the location where you want to save the file to the <code>path</code> argument in the <code>write_csv</code> funciton, as in the example below.</p>
 <pre class="r"><code>readr::write_csv(mytable, path = &quot;..\MyDesktop\MyUsabilityStudy\completion-rates.csv&quot;)</code></pre>
 </div>
 </div>
 <div id="create-a-figure" class="section level1">
 <h1><span class="header-section-number">4</span> Create a figure</h1>
-<p>If you need a figure, use the <code>comp_._figure</code> function. You can overwrite the default labels by providing your own.</p>
+<p>If you need a figure, use the <code>comp_figure</code> function. You can overwrite the default labels by providing your own to the appropriate arugments in the function.</p>
 <pre class="r"><code>myfigure &lt;-
   comp_figure(mytable, xlabel=&quot;Test Task&quot;, ylabel = &quot;Success (%)&quot;, legend_lab=&quot;Groups&quot;)
 myfigure</code></pre>

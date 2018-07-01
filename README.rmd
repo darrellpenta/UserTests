@@ -28,21 +28,21 @@ If you just want to run analyses on a single task for which you know the success
 
 ```{r, echo=TRUE}
 mydata <-
-  UserTests::completion(.success=7, .trials=17)
+  completion(.success=7, .trials=17)
 mydata
 ```
 
 The results returned indicate:
 
-1. **successes**
+1. **successes**  
 The total number of success
-1. **trials**  
+1. **trials**  x  x   
 The total number of trials
 1. **orig.succ.pct**  
 The raw success rate as a percentage
-1. **estimator** 
+1. **estimator**  
 The name of the method used to adjust the sucess rate (see [Lewis & Sauro, 2006](http://uxpajournal.org/wp-content/uploads/pdf/JUS_Lewis_May2006.pdf])).
-1. **success.pct** 
+1. **success.pct**  
 The adjusted success rate as a percentage
 1. **low.ci.pct**  
 The lower confidence limit as a percentage
@@ -55,9 +55,9 @@ The upper confidence limit as a percentage
  
 Start by properly preparing your data file, which should be saved in``.csv`` format. The data file should have either 3 or 4 columns, depending upon whether one or two test groups are being analyzed. 
 
-In both cases, three of the columns should be: **Participant**, **Task**, and **Success**. The fourth (optional) column shuold be **Group**. See table 1:
+In both cases, three of the columns should be: **Participant** (numeric value), **Task** (numeric value), and **Success** (numeric value, coded as 1=success, 0=failure). The fourth (optional) column shuold be **Group** (character/text value). See table 1:
 
-Table 1
+**Table 1. Example task completion data set**
 
 Participant | Task | Success | Group   
 ----------- | ---- | ------- | ----- 
@@ -73,7 +73,7 @@ Participant | Task | Success | Group
 
 
 ## Import the data
-Next, import the file into R.
+Next, import the ``.csv`` file into R using the (readr)[https://cran.r-project.org/web/packages/readr/README.html] package.
 
 ```{r}
 mydata<-
@@ -83,8 +83,8 @@ head(mydata)
 
 
 ## Create a table of the adjusted completion rate means and confidence intervals
-Run the completion function on your data set to view table of summarized data.
-```{r}
+Run the completion function on your data set to view a table of summarized data. The ``head`` function in the code below is a convenient way to view the first few rows of data.
+```{r echo=TRUE}
 mytable<-
   completion(mydata)
 head(mytable)
@@ -93,15 +93,15 @@ head(mytable)
 
 ## Export the table
 
-You can export the table as a ``.csv`` file if you'd like one. Provide the path argument as in the example.
+You can export the table as a ``.csv`` file. Just include the path to the location where you want to save the file to the ``path`` argument in the ``write_csv`` funciton, as in the example below. 
 ```{r eval=FALSE}
 readr::write_csv(mytable, path = "..\MyDesktop\MyUsabilityStudy\completion-rates.csv")
 ```
 
 # Create a figure
-If you need a figure, use the ``comp_._figure`` function. You can overwrite the default labels by providing your own.
+If you need a figure, use the ``comp_figure`` function. You can overwrite the default labels by providing your own to the appropriate arugments in the function.
 
-```{r}
+```{r echo=TRUE}
 myfigure <-
   comp_figure(mytable, xlabel="Test Task", ylabel = "Success (%)", legend_lab="Groups")
 myfigure
