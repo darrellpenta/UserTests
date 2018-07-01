@@ -73,7 +73,7 @@ Participant | Task | Success | Group
 
 
 ## Import the data
-Next, import the ``.csv`` file into R using the (readr)[https://cran.r-project.org/web/packages/readr/README.html] package.
+Next, import the ``.csv`` file into R using the [readr](https://cran.r-project.org/web/packages/readr/README.html) package.
 
 ```{r}
 mydata<-
