@@ -16,3 +16,4 @@ Collate:
     'wilson-function.R'
     'df.completion.helper-function.R'
     'completion-function.R'
+    'geo_mean-function.R'
