@@ -24,7 +24,7 @@ library(UserTests)
 
 # Quick Analyses
 
-If you just want to run analyses on a single task for which you know the success rate and the number of trials, provide that information to the ``UserTests::completion`` function, as below. 
+If you just want to run analyses on a single task for which you know the success rate and the number of trials, provide that information to the ``UserTests::success_rate`` function, as below. 
 
 
 ```{r, echo=TRUE}
