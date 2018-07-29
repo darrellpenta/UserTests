@@ -8,7 +8,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-The functions in this package compute success rates and confidence intervals following [Jeff Sauro's excellent write up on MeasuringU](https://measuringu.com/wald/)
+The functions in this package compute success rates and confidence intervals following [Jeff Sauro's excellent write up on MeasuringU](https://measuringu.com/wald/) and Sauro and Lewis (2012).
 
 # Install packages
 Install and load the ``UserTests`` package and some other packages.
@@ -31,7 +31,7 @@ If you just want to run analyses on a single task for which you know the success
 
 ```r
 mydata <-
-  completion(.success=7, .trials=17)
+  success_rate(.success=7, .trials=17)
 mydata
 ```
 
@@ -119,11 +119,11 @@ head(mydata)
 
 
 ## Create a table of the adjusted completion rate means and confidence intervals
-Run the completion function on your data set to view a table of summarized data. The ``head`` function in the code below is a convenient way to view the first few rows of data.
+Run the ``success_rate`` function on your data set to view a table of summarized data. The ``head`` function in the code below is a convenient way to view the first few rows of data.
 
 ```r
 mytable<-
-  completion(mydata)
+  success_rate(mydata)
 head(mytable)
 ```
 
@@ -155,7 +155,7 @@ If you need a figure, use the ``comp_figure`` function. You can overwrite the de
 
 ```r
 myfigure <-
-  comp_figure(mytable, xlabel="Test Task", ylabel = "Success (%)", legend_lab="Groups")
+  success_rate_fig(mytable, xlabel="Test Task", ylabel = "Success (%)", legend_lab="Groups")
 myfigure
 ```
 
