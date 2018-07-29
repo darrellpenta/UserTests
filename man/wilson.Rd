@@ -23,9 +23,9 @@ an estimated succes rate (%) as a numeric
 Computes success rate using Wilson estimate
 }
 \seealso{
-Other success rate estimators: \code{\link{comp_figure}},
-  \code{\link{completion}},
-  \code{\link{df.completion.helper}},
+Other success rate estimators: \code{\link{df.success_rate.helper}},
   \code{\link{laplace}}, \code{\link{mle}},
-  \code{\link{wald.ci}}
+  \code{\link{success_rate_fig}},
+  \code{\link{success_rate}}, \code{\link{wald.ci}}
 }
+\concept{success rate estimators}

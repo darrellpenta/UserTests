@@ -1,24 +1,25 @@
-#' Creates bar graph of completion rates
+#' Creates bar graph of success rates
 #'
-#' @param .data The results (as a data frame) from \code{Completion} function
+#' @param .data The results (as a data frame) from \code{success_rate} function
 #' @param ... further arguments passed to or from other methods
 #' @param legend_lab Label for the legend (when groups are compared)
 #' @return a ggplot figure
 #' @family success rate estimators
-#' @rdname comp_figure
+#' @import ggplot2
+#' @rdname success_rate_fig
 #' @export
 #'
-comp_figure <- function(.data, ...) {
-  UseMethod("comp_figure", .data)
+success_rate_fig <- function(.data, ...) {
+  UseMethod("success_rate_fig", .data)
 }
 
-#' @rdname comp_figure
+#' @rdname success_rate_fig
 #' @param xlabel Label for the x axis
 #' @param ylabel Label for the y axis
 #' @param legend_lab Label for the legend (when groups are compared)
 #' @export
 #'
-comp_figure.default <- function(.data,..., xlabel="Objective Success (%)", ylabel="Task", legend_lab="Group"){
+success_rate_fig.default <- function(.data,..., xlabel="Objective Success (%)", ylabel="Task", legend_lab="Group"){
 if(ncol(.data)==8){
 
   x<-

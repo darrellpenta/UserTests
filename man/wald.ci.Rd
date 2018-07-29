@@ -25,9 +25,9 @@ a list with the lower and upper confidence limits (%) as numerics
 Computes confidence intervals using adjusted Wald (Agresti & Coull, 1998)
 }
 \seealso{
-Other success rate estimators: \code{\link{comp_figure}},
-  \code{\link{completion}},
-  \code{\link{df.completion.helper}},
+Other success rate estimators: \code{\link{df.success_rate.helper}},
   \code{\link{laplace}}, \code{\link{mle}},
-  \code{\link{wilson}}
+  \code{\link{success_rate_fig}},
+  \code{\link{success_rate}}, \code{\link{wilson}}
 }
+\concept{success rate estimators}

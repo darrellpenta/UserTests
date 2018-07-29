@@ -7,13 +7,13 @@ Depends: R (>= 3.5.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Collate: 
-    'comp_figure-function.R'
-    'wald.ci-function.R'
-    'mle-function.R'
-    'laplace-function.R'
-    'wilson-function.R'
-    'df.completion.helper-function.R'
-    'completion-function.R'
+    'df.success_rate.helper-function.R'
     'geo_mean-function.R'
+    'laplace-function.R'
+    'mle-function.R'
+    'wald.ci-function.R'
+    'wilson-function.R'
+    'success_rate-function.R'
+    'success_rate_fig-function.R'

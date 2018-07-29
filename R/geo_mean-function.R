@@ -47,7 +47,7 @@ geo_mean.data.frame <-
 #'
 geo_mean.list<-
   function(.data, ...){
-    if(length(.data[[1]])>1){
+    if(length(.data[[1]])>25){
       return("Are you sure you want the Geometric Mean? You have more than 25 data points.")
       stop()
     }

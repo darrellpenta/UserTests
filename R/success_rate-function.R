@@ -1,28 +1,28 @@
-#' Computes estimated success rate with confidence intervals
+#' Computes estimated success rate with confidence intervals for small samples, following Sauro and Lewis (2012)
 #'
 #' @param .success  the total number of successes
 #' @param .trials the total number of trials
 #' @param ... further arguments passed to or from other methods
 #' @return a dataframe with stats
 #' @family success rate estimators
-#' @include df.completion.helper-function.R
+#' @include df.success_rate.helper-function.R
 #' @include wilson-function.R
 #' @include laplace-function.R
 #' @include mle-function.R
 #' @include wald.ci-function.R
-#' @rdname completion
+#' @rdname success_rate
 #' @export
 #'
 #'
-completion <- function(.success, ...) {
-  UseMethod("completion", .success)
+success_rate <- function(.success, ...) {
+  UseMethod("success_rate", .success)
 }
 
-#' @rdname completion
+#' @rdname success_rate
 
 #' @export
 #'
-completion.default <-
+success_rate.default <-
   function(.success, .trials, ...){
     p <- .success / .trials
 
@@ -88,11 +88,11 @@ completion.default <-
     )
   }
 
-#' @rdname completion
-
+#' @rdname success_rate
+#' @import dplyr
 #' @export
 #'
-completion.data.frame <- function(.success, ...){
+success_rate.data.frame <- function(.success, ...){
 
   if(ncol(.success)==3){
 
@@ -102,7 +102,7 @@ completion.data.frame <- function(.success, ...){
       summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
       ungroup() %>%
       group_by(Task) %>%
-      do(df.completion.helper(.))
+      do(df.success_rate.helper(.))
     out
   }
 else if(ncol(.success)==4){
@@ -113,7 +113,7 @@ else if(ncol(.success)==4){
       summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
       ungroup() %>%
       group_by(Task, Group) %>%
-      do(df.completion.helper(.))
+      do(df.success_rate.helper(.))
     out
   }
 else{

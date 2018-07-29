@@ -26,3 +26,4 @@ a geometric mean
 \description{
 Computes the geometric mean for small sample size (n<=25) completion times
 }
+\concept{Completion time estimators}
