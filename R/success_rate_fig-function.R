@@ -5,7 +5,7 @@
 #' @param legend_lab Label for the legend (when groups are compared)
 #' @return a ggplot figure
 #' @family success rate estimators
-#' @import ggplot2
+#' @import tidyverse
 #' @rdname success_rate_fig
 #' @export
 #'

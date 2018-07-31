@@ -1,4 +1,2 @@
-library(dplyr)
-library(readr)
-library(tibble)
-library(ggplot2)
+
+library(tidyverse)

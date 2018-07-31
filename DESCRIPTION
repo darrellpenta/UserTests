@@ -13,6 +13,8 @@ Collate:
     'geo_mean-function.R'
     'laplace-function.R'
     'mle-function.R'
+    't_critical-function.R'
+    'ratings_summary-function.R'
     'wald.ci-function.R'
     'wilson-function.R'
     'success_rate-function.R'

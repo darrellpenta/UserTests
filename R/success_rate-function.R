@@ -5,6 +5,7 @@
 #' @param ... further arguments passed to or from other methods
 #' @return a dataframe with stats
 #' @family success rate estimators
+#' @import tidyverse
 #' @include df.success_rate.helper-function.R
 #' @include wilson-function.R
 #' @include laplace-function.R
@@ -98,22 +99,22 @@ success_rate.data.frame <- function(.success, ...){
 
     out <-
       .success %>%
-      group_by(Task) %>%
-      summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
-      ungroup() %>%
-      group_by(Task) %>%
-      do(df.success_rate.helper(.))
+      dplyr::group_by(Task) %>%
+      dplyr::summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(Task) %>%
+      dplyr::do(df.success_rate.helper(.))
     out
   }
 else if(ncol(.success)==4){
 
     out <-
       .success %>%
-      group_by(Task, Group) %>%
-      summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
-      ungroup() %>%
-      group_by(Task, Group) %>%
-      do(df.success_rate.helper(.))
+      dplyr::group_by(Task, Group) %>%
+      dplyr::summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(Task, Group) %>%
+      dplyr::do(df.success_rate.helper(.))
     out
   }
 else{
