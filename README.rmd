@@ -1,5 +1,5 @@
 ---
-title: "Working with UserTests"
+title: "Computing Confidence Intervals in R for UX Researchers"
 author: Darrell J. Penta, PhD
 output:
   html_document:
