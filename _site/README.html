@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Darrell J. Penta, PhD" />
+
+
+<title>Computing Confidence Intervals in R for UX Researchers</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Tools for UX Researchers</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="UX-confidence-intervals-in-R.html">UX Confidence Intervals in R</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Computing Confidence Intervals in R for UX Researchers</h1>
+<h4 class="author"><em>Darrell J. Penta, PhD</em></h4>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>The functions in this package compute success rates and confidence intervals following <a href="https://measuringu.com/wald/">Jeff Sauro’s excellent write up on MeasuringU</a>, <a href="http://uxpajournal.org/wp-content/uploads/sites/8/pdf/JUS_Lewis_May2006.pdf">Lewis and Sauro (2006)</a>, and <a href="http://www.measuringux.com/adjustedwald.htm">this page</a> by Tom Tullis, which includes a downloadable <a href="http://www.measuringux.com/AdjustedWald.xls">Excel spreadsheet</a> for computing the Adjusted Walk Confidence Interval.</p>
+<p>Lewis and Sauro (2006, p. 144) offer several recommendations:</p>
+<ol style="list-style-type: decimal">
+<li><p>Always compute a confidence interval, as it is more informative than a point estimate. For most usability work, we recommend a 95% adjusted-Wald interval (Sauro &amp; Lewis, 2005).</p></li>
+<li><p>If you conduct usability tests in which your task completion rates typically take a wide range of values, uniformly distributed between 0 and 1, then you should use the LaPlace method. The smaller your sample size and the farther your initial estimate of p is from .5, the more you will improve your estimate of p.</p></li>
+<li>If you conduct usability tests in which your task completion rates are roughly restricted to the range of .5 to 1.0, then the best estimation method depends on the value of x/n.<br />
+</li>
+</ol>
+<ul>
+<li>If x/n ≤ .5, use the Wilson method (which you get as part of the process of computing an adjusted-Wald binomial confidence interval).</li>
+<li>If x/n is between .5 and .9, use the MLE. Any attempt to improve on it is as likely to decrease as to increase the estimate’s accuracy.</li>
+<li>If x/n ≥ .9, but less than 1.0, apply either the LaPlace or Jeffreys method. DO NOT use Wilson in this range to estimate p, even if you have computed a 95% adjusted-Wald confidence interval! (3d) If x/n = 1.0, use the Laplace method.</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Always use an adjustment when sample sizes are small (n&lt;20). (It does no harm to use an adjustment when sample sizes are larger.)</li>
+</ol>
+<div id="adjusted-wald-binomal-confidence-interval" class="section level2">
+<h2><span class="header-section-number">1.1</span> Adjusted-Wald binomal confidence interval</h2>
+<p>The equation for the Adjusted-Wald confidence interval is given in (1)</p>
+<ol style="list-style-type: decimal">
+<li></li>
+</ol>
+<p><span class="math display">\[\hat{p}_{adj} \pm z_{\alpha} \times \sqrt{\frac{\hat{p}_{adj}(1-\hat{p}_{adj})}{n_{adj}}}\]</span></p>
+<p><span class="math inline">\(n\)</span> = total trials<br />
+<span class="math inline">\(\hat{p}\)</span> = proportion of success trials<br />
+<span class="math inline">\(z_{\alpha}\)</span> = the desired critical z-value (defaulting to 1.96 in the <code>success_rate()</code> function of this package)<br />
+<span class="math inline">\(\hat{p}_{adj} = \left(\frac{(n \times \hat{p} + z_{\alpha}^2/2)}{n + z_{\alpha}^2} \right)\)</span><br />
+<span class="math inline">\(n_{adj} = n + z_{\alpha}^2\)</span></p>
+</div>
+<div id="point-estimators" class="section level2">
+<h2><span class="header-section-number">1.2</span> Point estimators</h2>
+<p>In addition to the Wilson method, which is used in computing the Adjusted-Wald binomial confidence interval, Lewis and Sauro (2006) also describe the use of the Laplace and Maximum Likelihood Estimate (MLE) for point estimation.</p>
+<div id="laplace-method" class="section level3">
+<h3><span class="header-section-number">1.2.1</span> Laplace Method</h3>
+<p>The equation for the Laplace method is given in (2)</p>
+<ol start="2" style="list-style-type: decimal">
+<li><span class="math display">\[\frac{(x + 1)}{(n + 2)}\]</span></li>
+</ol>
+<p><span class="math inline">\(x\)</span> = the observed number of success trials<br />
+<span class="math inline">\(n\)</span> = the total number of trials</p>
+</div>
+<div id="maximum-likelihood-estimate-mle" class="section level3">
+<h3><span class="header-section-number">1.2.2</span> Maximum Likelihood Estimate (MLE)</h3>
+<p>The equation for the Maximum Likelihood Estimate method is given in (3)</p>
+<ol start="3" style="list-style-type: decimal">
+<li><span class="math display">\[\frac{x}{n}\]</span></li>
+</ol>
+<p><span class="math inline">\(x\)</span> = the observed number of success trials<br />
+<span class="math inline">\(n\)</span> = the total number of trials</p>
+</div>
+</div>
+</div>
+<div id="working-with-the-usertests-functions" class="section level1">
+<h1><span class="header-section-number">2</span> Working with the UserTests functions</h1>
+<div id="install-packages" class="section level2">
+<h2><span class="header-section-number">2.1</span> Install packages</h2>
+<p>Install and load the <code>UserTests</code> package and some other packages.</p>
+<pre class="r"><code>#install.packages(&quot;tidyverse&quot;, repos = &quot;http://cran.us.r-project.org&quot; ) 
+#install.packages(&quot;devtools&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+#devtools::install_github(repo = &quot;darrellpenta/UserTests&quot;)
+
+library(tidyverse) #For importing and exporting data, wrangling data, making figures
+library(devtools) #For installing the UserTests package from GitHub
+library(UserTests)</code></pre>
+</div>
+<div id="quick-analyses" class="section level2">
+<h2><span class="header-section-number">2.2</span> Quick Analyses</h2>
+<p>If you just want to run analyses on a single task for which you know the success rate and the number of trials, provide that information to the <code>UserTests::success_rate</code> function, as below.</p>
+<pre class="r"><code>mydata &lt;-
+  success_rate(.success=7, .trials=17)
+mydata</code></pre>
+<pre><code>##   successes trials orig.succ.pct estimator success.pct low.ci.pct
+## 1         7     17         41.18    Wilson        42.8      21.56
+##   hi.ci.pct
+## 1     64.05</code></pre>
+<p>The results returned indicate:</p>
+<ol style="list-style-type: decimal">
+<li><strong>successes</strong><br />
+The total number of success</li>
+<li><strong>trials</strong><br />
+The total number of trials</li>
+<li><strong>orig.succ.pct</strong><br />
+The raw success rate as a percentage</li>
+<li><strong>estimator</strong><br />
+The name of the method used to adjust the success rate (see <a href="http://uxpajournal.org/wp-content/uploads/pdf/JUS_Lewis_May2006.pdf%5D">Lewis &amp; Sauro, 2006</a>).</li>
+<li><strong>success.pct</strong><br />
+The adjusted success rate as a percentage</li>
+<li><strong>low.ci.pct</strong><br />
+The lower confidence limit as a percentage</li>
+<li><strong>hi.ci.pct</strong><br />
+The upper confidence limit as a percentage</li>
+</ol>
+</div>
+<div id="analyzing-larger-data-sets" class="section level2">
+<h2><span class="header-section-number">2.3</span> Analyzing larger data sets</h2>
+<div id="get-your-data-in-order" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> Get your data in order</h3>
+<p>Start by properly preparing your data file, which should be saved in<code>.csv</code> format. The data file should have either 3 or 4 columns, depending upon whether one or two test groups are being analyzed.</p>
+<p>In both cases, three of the columns should be: <strong>Participant</strong> (numeric value), <strong>Task</strong> (numeric value), and <strong>Success</strong> (numeric value, coded as 1=success, 0=failure). The fourth (optional) column should be <strong>Group</strong> (character/text value). See table 1:</p>
+<p><strong>Table 1. Example task completion data set</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Participant</th>
+<th>Task</th>
+<th>Success</th>
+<th>Group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>US</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>THEM</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>US</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>THEM</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>US</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>THEM</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>US</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>THEM</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="import-the-data" class="section level3">
+<h3><span class="header-section-number">2.3.2</span> Import the data</h3>
+<p>Next, import the <code>.csv</code> file into R using the <a href="https://cran.r-project.org/web/packages/readr/README.html">readr</a> package.</p>
+<pre class="r"><code>mydata&lt;-
+  readr::read_csv(&quot;sample data/sample_data_2.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Group = col_character(),
+##   Participant = col_integer(),
+##   Task = col_integer(),
+##   Success = col_integer()
+## )</code></pre>
+<pre class="r"><code>head(mydata)</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   Group Participant  Task Success
+##   &lt;chr&gt;       &lt;int&gt; &lt;int&gt;   &lt;int&gt;
+## 1 US              1     1       0
+## 2 US              1     2       1
+## 3 US              1     3       0
+## 4 US              1     4       1
+## 5 US              2     1       1
+## 6 US              2     2       1</code></pre>
+</div>
+<div id="create-a-table-of-the-adjusted-completion-rate-means-and-confidence-intervals" class="section level3">
+<h3><span class="header-section-number">2.3.3</span> Create a table of the adjusted completion rate means and confidence intervals</h3>
+<p>Run the <code>success_rate</code> function on your data set to view a table of summarized data. The <code>head</code> function in the code below is a convenient way to view the first few rows of data.</p>
+<pre class="r"><code>mytable&lt;-
+  success_rate(mydata)
+head(mytable)</code></pre>
+<pre><code>## # A tibble: 6 x 9
+## # Groups:   Task, Group [6]
+##    Task Group successes trials orig.succ.pct estimator success.pct
+##   &lt;int&gt; &lt;chr&gt;     &lt;int&gt;  &lt;int&gt;         &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;
+## 1     1 THEM          4      8          50   MLE              50  
+## 2     1 US            4      8          50   MLE              50  
+## 3     2 THEM          5      8          62.5 MLE              62.5
+## 4     2 US            7      8          87.5 MLE              87.5
+## 5     3 THEM          2      8          25   Wilson           33.1
+## 6     3 US            5      8          62.5 MLE              62.5
+## # ... with 2 more variables: low.ci.pct &lt;dbl&gt;, hi.ci.pct &lt;dbl&gt;</code></pre>
+</div>
+<div id="export-the-table" class="section level3">
+<h3><span class="header-section-number">2.3.4</span> Export the table</h3>
+<p>You can export the table as a <code>.csv</code> file. Just include the path to the location where you want to save the file to the <code>path</code> argument in the <code>write_csv</code> function, as in the example below.</p>
+<pre class="r"><code>readr::write_csv(mytable, path = &quot;..\MyDesktop\MyUsabilityStudy\completion-rates.csv&quot;)</code></pre>
+</div>
+</div>
+<div id="create-a-figure" class="section level2">
+<h2><span class="header-section-number">2.4</span> Create a figure</h2>
+<p>If you need a figure, use the <code>comp_figure</code> function. You can overwrite the default labels by providing your own to the appropriate arguments in the function.</p>
+<pre class="r"><code>myfigure &lt;-
+  success_rate_fig(mytable, xlabel=&quot;Test Task&quot;, ylabel = &quot;Success (%)&quot;, legend_lab=&quot;Groups&quot;)
+myfigure</code></pre>
+<p><img src="README_files/figure-html/unnamed-chunk-6-1.png" /><!-- --></p>
+</div>
+<div id="saving-the-figure" class="section level2">
+<h2><span class="header-section-number">2.5</span> Saving the figure</h2>
+<p>To save the figure, provide the output format and path. The easiest way is to combine both of these in one string. Acceptable file formats include:</p>
+<ul>
+<li>eps</li>
+<li>ps</li>
+<li>tex</li>
+<li>pdf</li>
+<li>jpeg</li>
+<li>tiff</li>
+<li>png</li>
+<li>bmp</li>
+<li>svg</li>
+<li>wmf</li>
+</ul>
+<pre class="r"><code>ggsave(&quot;../MyDesktop/usability-test-figure.png&quot;)</code></pre>
+<p>Visit my website, <a href="http://www.darrelljpenta.com">darrelljpenta.com</a> or <a href="mailto:darrellpenta@gmail.com">email me</a></p>
+</div>
+</div>
+
+<p>Copyright &copy; 2018 DarrellJPenta</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

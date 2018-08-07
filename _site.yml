@@ -1,0 +1,17 @@
+name: "The UserTests Package"
+navbar:
+  title: "Tools for UX Researchers"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "UX Confidence Intervals in R"
+      href: UX-confidence-intervals-in-R.html
+output:
+
+  html_document:
+    number_sections: yes
+    theme: cosmo
+    highlight: textmate
+    output_dir: "."
+    include:
+      after_body: footer.html
