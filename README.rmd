@@ -1,5 +1,6 @@
 ---
 title: "Working with UserTests"
+author: Darrell J. Penta, PhD
 output:
   html_document:
     keep_md: true
@@ -7,22 +8,78 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
+# Introduction
+The functions in this package compute success rates and confidence intervals following [Jeff Sauro's excellent write up on MeasuringU](https://measuringu.com/wald/), [Lewis and Sauro (2006)](http://uxpajournal.org/wp-content/uploads/sites/8/pdf/JUS_Lewis_May2006.pdf), and [this page](http://www.measuringux.com/adjustedwald.htm) by Tom Tullis, which includes a downloadable [Excel spreadsheet](http://www.measuringux.com/AdjustedWald.xls) for computing the Adjusted Walk Confidence Interval.
 
-The functions in this package compute success rates and confidence intervals following [Jeff Sauro's excellent write up on MeasuringU](https://measuringu.com/wald/) and Sauro and Lewis (2012).
+Lewis and Sauro (2006, p. 144) offer several recommendations:
 
-# Install packages
+1. Always compute a confidence interval, as it is more informative than a point estimate. For most usability work, we recommend a 95% adjusted-Wald interval
+(Sauro & Lewis, 2005).
+
+2. If you conduct usability tests in which your task completion rates typically take a wide range of values, uniformly distributed between 0 and 1, then you should use the LaPlace method. The smaller your sample size and the farther your initial estimate of p is from .5, the more you will improve your estimate of p.
+
+3. If you conduct usability tests in which your task completion rates are roughly restricted to the range of .5 to 1.0, then the best estimation method depends on the value of x/n.  
+  * If x/n ≤ .5, use the Wilson method (which you get as part of the process of computing an adjusted-Wald binomial confidence interval). 
+  * If x/n is between .5 and .9, use the
+MLE. Any attempt to improve on it is as likely to
+decrease as to increase the estimate’s accuracy. 
+  * If x/n ≥ .9, but less than 1.0, apply either the LaPlace or Jeffreys method. DO NOT use Wilson in this range to estimate p, even if you have computed a 95% adjusted-Wald confidence interval! (3d) If x/n = 1.0, use the Laplace method.
+
+4. Always use an adjustment when sample sizes are small (n<20). (It does no harm to use an adjustment when sample sizes are larger.)
+
+
+## Adjusted-Wald binomal confidence interval
+The equation for the Adjusted-Wald confidence interval is given in (1)
+
+(1) 
+
+$$\hat{p}_{adj} \pm z_{\alpha} \times \sqrt{\frac{\hat{p}_{adj}(1-\hat{p}_{adj})}{n_{adj}}}$$
+
+$n$ = total trials  
+$\hat{p}$ = proportion of success trials  
+$z_{\alpha}$ = the desired critical z-value (defaulting to 1.96 in the `success_rate()` function of this package)  
+$\hat{p}_{adj} = \left(\frac{(n \times \hat{p} + z_{\alpha}^2/2)}{n + z_{\alpha}^2} \right)$  
+$n_{adj} = n + z_{\alpha}^2$  
+
+## Point estimators
+In addition to the Wilson method, which is used in computing the Adjusted-Wald binomial confidence interval, Lewis and Sauro (2006) also describe the use of the Laplace and Maximum Likelihood Estimate (MLE) for point estimation.
+
+### Laplace Method
+The equation for the Laplace method is given in (2)
+
+(2)
+$$\frac{(x + 1)}{(n + 2)}$$
+
+$x$ = the observed number of success trials  
+$n$ = the total number of trials   
+
+### Maximum Likelihood Estimate (MLE)
+The equation for the Maximum Likelihood Estimate method is given in (3)
+
+(3)
+$$\frac{x}{n}$$
+
+$x$ = the observed number of success trials  
+$n$ = the total number of trials  
+
+
+# Working with the UserTests functions
+
+## Install packages
 Install and load the ``UserTests`` package and some other packages.
 
 ```{r echo=TRUE}
-#install.packages("readr", repos = "http://cran.us.r-project.org" )
-library(readr)
+
+#install.packages("tidyverse", repos = "http://cran.us.r-project.org" ) 
 #install.packages("devtools", repos = "http://cran.us.r-project.org")
-library(devtools)
 #devtools::install_github(repo = "darrellpenta/UserTests")
+
+library(tidyverse) #For importing and exporting data, wrangling data, making figures
+library(devtools) #For installing the UserTests package from GitHub
 library(UserTests)
 ```
 
-# Quick Analyses
+## Quick Analyses
 
 If you just want to run analyses on a single task for which you know the success rate and the number of trials, provide that information to the ``UserTests::success_rate`` function, as below. 
 
@@ -37,12 +94,12 @@ The results returned indicate:
 
 1. **successes**  
 The total number of success
-1. **trials**  x  x   
+1. **trials**  
 The total number of trials
 1. **orig.succ.pct**  
 The raw success rate as a percentage
 1. **estimator**  
-The name of the method used to adjust the sucess rate (see [Lewis & Sauro, 2006](http://uxpajournal.org/wp-content/uploads/pdf/JUS_Lewis_May2006.pdf])).
+The name of the method used to adjust the success rate (see [Lewis & Sauro, 2006](http://uxpajournal.org/wp-content/uploads/pdf/JUS_Lewis_May2006.pdf])).
 1. **success.pct**  
 The adjusted success rate as a percentage
 1. **low.ci.pct**  
@@ -50,13 +107,13 @@ The lower confidence limit as a percentage
 1. **hi.ci.pct**  
 The upper confidence limit as a percentage
 
-# Analyzing larger data sets
+## Analyzing larger data sets
 
-## Get your data in order
+### Get your data in order
  
 Start by properly preparing your data file, which should be saved in``.csv`` format. The data file should have either 3 or 4 columns, depending upon whether one or two test groups are being analyzed. 
 
-In both cases, three of the columns should be: **Participant** (numeric value), **Task** (numeric value), and **Success** (numeric value, coded as 1=success, 0=failure). The fourth (optional) column shuold be **Group** (character/text value). See table 1:
+In both cases, three of the columns should be: **Participant** (numeric value), **Task** (numeric value), and **Success** (numeric value, coded as 1=success, 0=failure). The fourth (optional) column should be **Group** (character/text value). See table 1:
 
 **Table 1. Example task completion data set**
 
@@ -73,7 +130,7 @@ Participant | Task | Success | Group
  ...        | ...  | ...     | ...
 
 
-## Import the data
+### Import the data
 Next, import the ``.csv`` file into R using the [readr](https://cran.r-project.org/web/packages/readr/README.html) package.
 
 ```{r}
@@ -83,7 +140,7 @@ head(mydata)
 ```
 
 
-## Create a table of the adjusted completion rate means and confidence intervals
+### Create a table of the adjusted completion rate means and confidence intervals
 Run the ``success_rate`` function on your data set to view a table of summarized data. The ``head`` function in the code below is a convenient way to view the first few rows of data.
 ```{r echo=TRUE}
 mytable<-
@@ -92,15 +149,15 @@ head(mytable)
 
 ```
 
-## Export the table
+### Export the table
 
-You can export the table as a ``.csv`` file. Just include the path to the location where you want to save the file to the ``path`` argument in the ``write_csv`` funciton, as in the example below. 
+You can export the table as a ``.csv`` file. Just include the path to the location where you want to save the file to the ``path`` argument in the ``write_csv`` function, as in the example below. 
 ```{r eval=FALSE}
 readr::write_csv(mytable, path = "..\MyDesktop\MyUsabilityStudy\completion-rates.csv")
 ```
 
-# Create a figure
-If you need a figure, use the ``comp_figure`` function. You can overwrite the default labels by providing your own to the appropriate arugments in the function.
+## Create a figure
+If you need a figure, use the ``comp_figure`` function. You can overwrite the default labels by providing your own to the appropriate arguments in the function.
 
 ```{r echo=TRUE}
 myfigure <-
@@ -108,7 +165,7 @@ myfigure <-
 myfigure
 ```
 
-# Saving the figure
+## Saving the figure
 
 To save the figure, provide the output format and path. The easiest way is to combine both of these in one string.  Acceptable file formats include:
 
@@ -127,3 +184,4 @@ To save the figure, provide the output format and path. The easiest way is to co
 ggsave("../MyDesktop/usability-test-figure.png")
 ```
 
+Visit my website, [darrelljpenta.com](http://www.darrelljpenta.com) or <a href="mailto:darrellpenta@gmail.com">email me</a>
