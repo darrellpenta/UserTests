@@ -13,7 +13,7 @@ df.success_rate.helper <-function(.data,...){
   if(ncol(.data)==3){
   success <- .data[[3]][1]
   trials <- .data[[2]][1]
-  out <- data.frame(sucess_rate(.success=success, .trials=trials), stringsAsFactors = FALSE)
+  out <- data.frame(success_rate(.success=success, .trials=trials), stringsAsFactors = FALSE)
   out
   }
   else if(ncol(.data)==4) {

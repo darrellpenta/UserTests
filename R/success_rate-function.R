@@ -100,6 +100,7 @@ success_rate.data.frame <- function(.success, ...){
     out <-
       .success %>%
       dplyr::group_by(Task) %>%
+      dplyr::mutate_at(vars("Success"), funs(as.numeric(.))) %>%
       dplyr::summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(Task) %>%
@@ -111,6 +112,7 @@ else if(ncol(.success)==4){
     out <-
       .success %>%
       dplyr::group_by(Task, Group) %>%
+      dplyr::mutate_at(vars("Success"), funs(as.numeric(.))) %>%
       dplyr::summarise_at(vars("Success"), funs(trials = n(), success=sum(.))) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(Task, Group) %>%
